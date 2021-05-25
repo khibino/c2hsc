@@ -33,7 +33,7 @@ Library
       , text            >= 0.11.3.1
     exposed-modules:
         Data.C2Hsc
-    default-extensions: 
+    default-extensions:
         BangPatterns
         FlexibleContexts
         OverloadedStrings
@@ -43,7 +43,7 @@ Executable c2hsc
     main-is: Main.hs
     ghc-options: -Wall
 
-    build-depends: 
+    build-depends:
         base            >= 4   && < 5
       , c2hsc
       , cmdargs         >= 0.9
@@ -65,7 +65,7 @@ Test-suite test
     Type: exitcode-stdio-1.0
     Main-is: main.hs
     Hs-source-dirs: test
-    Build-depends: 
+    Build-depends:
         base         >= 4 && < 5
       , c2hsc
       , hspec        >= 1.8.3

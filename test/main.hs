@@ -4,7 +4,6 @@
 module Main where
 
 import Control.Exception
-import Control.Logging
 import Data.C2Hsc
 import Data.Char
 import Data.String.Here

@@ -1,8 +1,7 @@
 module Main where
 
-import Control.Logging hiding (debug)
 import Control.Monad hiding (sequence)
-import Data.C2Hsc (C2HscOptions(..), runArgs)
+import Data.C2Hsc (C2HscOptions(..), runArgs, withStderrLogging)
 import Data.List as L
 import Prelude hiding (concat, sequence, mapM, mapM_, foldr)
 import System.Console.CmdArgs

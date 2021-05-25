@@ -7,10 +7,14 @@ module Data.C2Hsc (
 
   -- for debugging
   processString,
+
+  -- helper interfaces like Control.Logging
+  withStdoutLogging,
+  withStderrLogging,
+  log,
   ) where
 
 import           Control.Applicative
-import           Control.Logging
 import           Control.Monad hiding (sequence)
 import           Control.Monad.Trans.State
 import           Data.Char
@@ -19,10 +23,12 @@ import           Data.Default
 import           Data.Foldable hiding (concat, elem, mapM_)
 import           Data.List as L
 import           Data.List.Split
+import           Data.IORef (IORef, newIORef, readIORef, writeIORef)
 import qualified Data.Map as M
 import           Data.Maybe
 import           Data.Monoid
-import           Data.Text (pack)
+import           Data.Text (pack, Text)
+import qualified Data.Text.IO as T
 import           Data.Traversable hiding (mapM, forM)
 import           Language.C.Data.Ident
 import           Language.C.Data.InputStream
@@ -37,6 +43,7 @@ import           Prelude hiding (concat, sequence, mapM, mapM_, foldr)
 import           System.Directory
 import           System.FilePath.Posix
 import           System.IO
+import           System.IO.Unsafe (unsafePerformIO)
 import           System.IO.Temp
 import           Text.PrettyPrint as P hiding ((<>))
 import           Text.StringTemplate
@@ -57,6 +64,23 @@ instance Default C2HscOptions where
     def = C2HscOptions "/usr/bin/gcc" [] "" [] "" True False []
 
 ------------------------------ IMPURE FUNCTIONS ------------------------------
+
+handleRef :: IORef Handle
+handleRef = unsafePerformIO $ newIORef stderr
+
+with :: Handle -> IO () -> IO ()
+with h = (writeIORef handleRef h >>)
+
+withStdoutLogging :: IO () -> IO ()
+withStdoutLogging = with stdout
+
+withStderrLogging :: IO () -> IO ()
+withStderrLogging = with stderr
+
+log' :: Text -> IO ()
+log' m = do
+  h <- readIORef handleRef
+  T.hPutStrLn h m
 
 -- This function is used for debugging
 processString :: String -> IO String

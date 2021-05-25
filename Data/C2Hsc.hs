@@ -1,7 +1,13 @@
 {-# LANGUAGE DeriveDataTypeable #-}
 {-# LANGUAGE OverloadedStrings #-}
 
-module Data.C2Hsc where
+module Data.C2Hsc (
+  C2HscOptions (..),
+  runArgs,
+
+  -- for debugging
+  processString,
+  ) where
 
 import           Control.Applicative
 import           Control.Logging
